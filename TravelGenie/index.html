@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TravelGenie - AI Travel Planner</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header class="navbar">
+        <div class="logo" onclick="navigateTo('home-screen')">
+            <i class="fa-solid fa-plane-departure"></i> TravelGenie
+        </div>
+        <nav>
+            <button onclick="navigateTo('plan-screen')" class="nav-btn">Plan Trip</button>
+            <button onclick="navigateTo('assistant-screen')" class="nav-btn">AI Assistant</button>
+        </nav>
+    </header>
+
+    <main id="app">
+        <!-- 1. Home Screen -->
+        <section id="home-screen" class="screen active">
+            <div class="hero">
+                <h1>Your Personalized AI Travel Planner</h1>
+                <p>Discover, plan, and experience your dream vacation effortlessly with TravelGenie.</p>
+                <button class="primary-btn" onclick="navigateTo('plan-screen')">Start Planning Now</button>
+            </div>
+            <div class="features">
+                <div class="feature-card">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    <h3>AI Recommendations</h3>
+                    <p>Tailored destinations based on your unique preferences.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fa-regular fa-calendar-check"></i>
+                    <h3>Smart Itineraries</h3>
+                    <p>Optimized day-by-day plans with real-time adjustments.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fa-solid fa-wallet"></i>
+                    <h3>Budget Tracking</h3>
+                    <p>Keep your expenses in check effortlessly.</p>
+                </div>
+            </div>
+
+            <!-- New Trending / Recommended Section -->
+            <div style="margin-top: 4rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <h2>Trending & Recommended for You 🇮🇳</h2>
+                    <span style="background: var(--secondary); color: white; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.8rem; font-weight: 600;">✨ AI-powered recommendations</span>
+                </div>
+                <div id="home-recommendations-list" class="cards-container">
+                    <p>Loading recommendations...</p>
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. Plan My Trip Screen -->
+        <section id="plan-screen" class="screen">
+            <h2>Plan My Trip</h2>
+            <form id="trip-form">
+                <div class="form-group">
+                    <label>Starting Location</label>
+                    <input type="text" id="start-location" value="Mumbai" required>
+                </div>
+                <div class="form-group">
+                    <label>Destination (Optional)</label>
+                    <input type="text" id="destination-pref" placeholder="e.g. Kerala or specific city">
+                </div>
+                <div class="form-group" style="display: flex; gap: 1rem;">
+                    <div style="flex: 1;">
+                        <label>Start Date</label>
+                        <input type="date" id="start-date" value="2026-10-10" required>
+                    </div>
+                    <div style="flex: 1;">
+                        <label>End Date</label>
+                        <input type="date" id="end-date" value="2026-10-14" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Duration (Days)</label>
+                    <input type="number" id="duration" value="4" required>
+                </div>
+                <div class="form-group">
+                    <label>Travelers</label>
+                    <input type="number" id="travelers" value="2" required>
+                </div>
+                <div class="form-group">
+                    <label>Budget (₹)</label>
+                    <input type="number" id="budget-input" value="50000" required>
+                </div>
+                <div class="form-group">
+                    <label>Travel Companion</label>
+                    <select id="companions">
+                        <option>Solo</option>
+                        <option selected>Couple</option>
+                        <option>Family</option>
+                        <option>Friends</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Interests</label>
+                    <input type="text" id="interests" value="Nature, History, Local Food">
+                </div>
+                <div class="form-group">
+                    <label>Travel Style</label>
+                    <select id="travel-style">
+                        <option selected>Relaxing</option>
+                        <option>Adventure</option>
+                        <option>Cultural</option>
+                        <option>Party</option>
+                    </select>
+                </div>
+                <div class="form-group" style="display: flex; gap: 1rem;">
+                    <div style="flex: 1;">
+                        <label>Transport Preference</label>
+                        <select id="transport">
+                            <option>Flight</option>
+                            <option>Train</option>
+                            <option>Car</option>
+                        </select>
+                    </div>
+                    <div style="flex: 1;">
+                        <label>Accommodation</label>
+                        <select id="accommodation">
+                            <option>Hotel</option>
+                            <option>Hostel</option>
+                            <option>Airbnb</option>
+                            <option>Resort</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="submit" class="primary-btn">Help Me Choose</button>
+            </form>
+        </section>
+
+        <!-- 3. AI Recommendations Screen -->
+        <section id="recommendations-screen" class="screen">
+            <h2>AI Recommendations</h2>
+            <p>Based on your preferences, here are the top matches in India 🇮🇳:</p>
+            <div id="recommendations-list" class="cards-container">
+                <!-- Populated by JS -->
+            </div>
+        </section>
+
+        <!-- 4. Destination Details Screen -->
+        <section id="destination-screen" class="screen">
+            <button class="back-btn" onclick="navigateTo('recommendations-screen')"><i class="fa-solid fa-arrow-left"></i> Back</button>
+            <div id="destination-content">
+                <!-- Populated by JS -->
+            </div>
+            <button class="primary-btn" id="generate-itinerary-btn">Generate AI Itinerary</button>
+        </section>
+
+        <!-- 5. AI Itinerary Screen -->
+        <section id="itinerary-screen" class="screen">
+            <div class="itinerary-header">
+                <h2>Your Personalized Itinerary</h2>
+                <div class="itinerary-actions">
+                    <button class="secondary-btn" onclick="navigateTo('budget-screen')"><i class="fa-solid fa-wallet"></i> View Budget</button>
+                    <button class="secondary-btn" onclick="simulateWeatherEvent()"><i class="fa-solid fa-cloud-bolt"></i> Simulate Rain</button>
+                </div>
+            </div>
+            <div id="itinerary-content" class="timeline">
+                <!-- Populated by JS -->
+            </div>
+        </section>
+
+        <!-- 6. Budget & Trip Cost Screen -->
+        <section id="budget-screen" class="screen">
+            <button class="back-btn" onclick="navigateTo('itinerary-screen')"><i class="fa-solid fa-arrow-left"></i> Back to Itinerary</button>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h2>Budget & Trip Cost</h2>
+                <div>
+                    <input type="number" id="update-budget-input" placeholder="New Budget" style="padding: 0.5rem; border: 1px solid var(--border-color); border-radius: var(--radius);">
+                    <button class="secondary-btn" onclick="updateTotalBudget()">Update</button>
+                </div>
+            </div>
+            <div class="budget-dashboard">
+                <div class="budget-card">
+                    <h3>Total Budget</h3>
+                    <p id="total-budget-display">₹0</p>
+                </div>
+                <div class="budget-card">
+                    <h3>Estimated Cost</h3>
+                    <p id="estimated-cost-display">₹0</p>
+                </div>
+                <div class="budget-card">
+                    <h3>Remaining</h3>
+                    <p id="remaining-budget-display">₹0</p>
+                </div>
+            </div>
+            <div class="budget-breakdown">
+                <h3>Category Breakdown</h3>
+                <ul id="budget-categories">
+                    <!-- Populated by JS -->
+                </ul>
+            </div>
+        </section>
+
+        <!-- 7. AI Travel Assistant Screen -->
+        <section id="assistant-screen" class="screen">
+            <h2>AI Travel Assistant</h2>
+            <div class="chat-container">
+                <div id="chat-messages" class="chat-messages">
+                    <div class="message bot">Hello! I am TravelGenie. How can I assist you with your trip today?</div>
+                </div>
+                <div class="chat-input-area">
+                    <input type="text" id="chat-input" placeholder="Ask about weather, modifications, tips...">
+                    <button id="send-chat-btn"><i class="fa-solid fa-paper-plane"></i></button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
